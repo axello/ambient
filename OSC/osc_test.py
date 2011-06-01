@@ -8,29 +8,32 @@
 #
 
 import sys, os, time, random
-import OSC
+import OSCClient
 
+# OSCIP='127.0.0.1'
+OSCIP='192.168.8.105'
+OSCPort=5000
 
 def testSet():
-	# client = OSC.OSCClient( ('127.0.0.1', 5000) )
-	client = OSC.OSCClient()
-	myMessage = OSC.OSCMessage()
+	# client = OSC.OSCClient( (OSCIP, OSCPort) )
+	client = OSCClient.OSCClient()
+	myMessage = OSCClient.OSCMessage()
 	myMessage.setAddress("/xbee/x")
 	myMessage.append(0)
 	myMessage.append(100)
 	# print myMessage
 	# hexDump(myMessage.getBinary())
-	client.sendto(myMessage, ('127.0.0.1', 5000) )
+	client.sendto(myMessage, (OSCIP, OSCPort) )
 	client.close()
 	time.sleep(0.1)
 
 def sendReset():
-	myMessage = OSC.OSCMessage()
+	myMessage = OSCClient.OSCMessage()
 	myMessage.setAddress("/xbee/reset")
 	client.send(myMessage) # reset processing core
 
 def sendCoordinate(axis,value):
-	myMessage = OSC.OSCMessage()
+	myMessage = OSCClient.OSCMessage()
 	myMessage.setAddress("/xbee/x")
 	myMessage.append(axis)
 	myMessage.append(value)
@@ -57,7 +60,7 @@ def brownian():
 
 def leftRight():
 	for i in range(100,1000,20):
-		myMessage = OSC.OSCMessage()
+		myMessage = OSCClient.OSCMessage()
 		myMessage.setAddress("/xbee/x")
 		myMessage.append(0)
 		myMessage.append(i)
@@ -72,8 +75,8 @@ xDir = 0
 yDir = 0
 
 # setup
-client = OSC.OSCClient()
-client.connect(('127.0.0.1', 5000))
+client = OSCClient.OSCClient()
+client.connect((OSCIP, OSCPort))
 sendReset();
 # leftRight()
 #
